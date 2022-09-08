@@ -106,6 +106,8 @@
       return{
         output:[
         ],
+        fname: '',
+        lname: '',
         email: '',
         address: '',
         password: '',
@@ -117,6 +119,8 @@
         element.preventDefault()
 
         const form = {
+          fname: this.fname,
+          lname: this.lname,
           fullname: this.fname + ' ' + this.lname,
           email: this.email,
           address: this.address,
@@ -125,6 +129,8 @@
 
         }
         this.data = {form}
+        this.fname = '',
+        this.lname ='',
         this.email = '',
         this.address = '',
         this.password = '',
