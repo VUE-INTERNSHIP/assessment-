@@ -49,7 +49,7 @@
   <div class="box justify-content-center container-fluid mb-5 text-center" v-for="(info, x) in data" :key="x">
       <div class="row mt-2">
          <h4 class="col">Fullname:</h4>
-         <p class="col">{{info.fname + ' ' + info.lname}}</p> 
+         <p class="col">{{info.fullname}}</p> 
       </div>
 
       <div class="row">
