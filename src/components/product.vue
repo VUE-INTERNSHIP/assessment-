@@ -89,10 +89,9 @@ li {
 
 }
 img{
-  width:70%;
+  width:100%;
   height:250px;
-  margin:20px 15%;
-  border-radius:5px;
+  border-radius:5px 5px 0 0; 
 }
 p{
   margin:5px;
@@ -135,14 +134,11 @@ font-size:1.2em;
  display: flex;
  align-items:center;
  justify-content:flex-start;
- margin:0 -60px;
+
 }
 .rating > img{
   width: 20px;
   height:20px;
-}
-.rating>span{
-  margin:0px -13%;
 }
 .brand-cat{
   display:flex;
