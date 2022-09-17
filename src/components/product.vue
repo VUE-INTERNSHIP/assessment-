@@ -113,6 +113,7 @@ p{
   display:flex;
   width:100%;
   justify-content: space-between;
+  margin:10px 0;
   border-bottom:2px solid rgb(211, 211, 211);
 
 }
