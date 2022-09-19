@@ -1,8 +1,20 @@
 <template>
   <div class="main">
+    <div>
+      <input type="text" v-model="search" placeholder="Search product here...">
+       <select v-model="category" name="Category"> 
+            <option value="">Select Category</option>
+            <option value="smartphones">Smart phones</option>
+            <option value="laptop">Laptop</option>
+            <option value="fragrances">Fragrance</option>
+            <option value="skincare">Skin Care</option>
+            <option value="groceries">Groceries</option>
+            <option value="home-decoration">Home Deco</option> 
+        </select>
+    </div>
     <ul class="product">
-      <li v-for="product of products" :key="product.id">
-        <img :src="product.thumbnail">
+      <li v-for="product of filteredProducts" :key="product.id">
+        <img :src="product.thumbnail" class="thumbnail">
         <div class="price-title">
           <p class="title">{{ product.title }}</p>
           <p class="price">${{ product.price }}<s>{{ product.discountPercentage }} %</s></p>
@@ -13,9 +25,14 @@
           <span>Brand: {{ product.brand }}</span>
           <span>Category: {{ product.category }}</span>
         </div>
+        <div class="additional_images">
+          <div v-for="image in product.images" :key="image" >
+            <img :src="image" alt="">
+          </div>
+       </div>
         <!-- <span class="des" @click="viewDescription">{{description}}</span> -->
         <p class="description">Description: "{{ product.description }} "</p>
-        
+       
       </li>
     </ul>
   </div>
@@ -30,16 +47,21 @@ export default {
   data(){
     return{
       products:[],
-      description:'View Description',
-      showDescription:false
+      search:'',
+      category:''
     }
   },
-  // methods:{
-  //   viewDescription(){
-  //     this.showDescription = !this.showDescription
-  //     this.description='Hide Description'
-  //   }
-  // },
+  computed:{
+    filteredProducts: function(){
+      return this.products.filter(product=>{
+        return product.title.match(this.search) && product.category.match(this.category)
+      })
+    },
+
+  },
+  methods:{
+   
+ },
   mounted(){
     axios.get(baseUrl)
     .then( response =>{
@@ -60,6 +82,17 @@ export default {
     margin:0px;
     padding:0px;
   }
+input[type="text"]{
+  width:400px;
+  padding: 10px;
+  border-radius:5px;
+  margin:10px 6% ;
+
+}
+select{
+  padding:10px;
+  border:none;
+}
 h3 {
   margin: 40px 0 0;
 }
@@ -88,11 +121,10 @@ li {
   box-shadow: 5px 5px 5px 4px rgb(199, 199, 199);
 
 }
-img{
-  width:70%;
+.thumbnail{
+  width:100%;
   height:250px;
-  margin:20px 15%;
-  border-radius:5px;
+   border-radius:5px 5px 0 0; 
 }
 p{
   margin:5px;
@@ -113,6 +145,7 @@ p{
 .price-title{
   display:flex;
   width:100%;
+  margin:10px 0;
   justify-content: space-between;
   border-bottom:2px solid rgb(211, 211, 211);
 
@@ -135,15 +168,13 @@ font-size:1.2em;
  display: flex;
  align-items:center;
  justify-content:flex-start;
- margin:0 -60px;
+ /* margin:0 -60px; */
 }
 .rating > img{
   width: 20px;
   height:20px;
 }
-.rating>span{
-  margin:0px -13%;
-}
+
 .brand-cat{
   display:flex;
   padding:1%;
@@ -156,16 +187,23 @@ font-size:1.2em;
   background:#fff;
   border-radius:5px;
 }
-/* .des{
-  display: inline-block;
-  cursor:pointer;
-  margin:10px 5%;
-  padding:10px 20px;
-  background:red;
-  color:white
-} */
 .description{
   margin:10px 5%;
+}
+.additional_images{
+  display:flex;
+  justify-content:flex-start;
+  width:100%;
+  flex-wrap:wrap;
+  
+}
+.additional_images > div{
+  margin:10px 8px;
+}
+.additional_images > div > img{
+  border-radius:5px;
+  width:50px;
+  height:50px;
 }
 @media screen and (max-width: 1224px){
   ul {
@@ -181,6 +219,13 @@ font-size:1.2em;
 }
   }
   @media screen and (max-width: 680px){
+  input[type="text"]{
+    width:200px;
+    padding: 10px;
+    border-radius:5px;
+    margin:10px 6% ;
+
+}
   ul {
   list-style-type: none;
   margin-top:50px;
