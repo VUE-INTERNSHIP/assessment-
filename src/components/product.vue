@@ -121,17 +121,10 @@ li {
   box-shadow: 5px 5px 5px 4px rgb(199, 199, 199);
 
 }
-<<<<<<< HEAD
 .thumbnail{
   width:100%;
   height:250px;
    border-radius:5px 5px 0 0; 
-=======
-img{
-  width:100%;
-  height:250px;
-  border-radius:5px 5px 0 0; 
->>>>>>> 986a488c7b4d31f04e2b43d48e8914775c58e5f8
 }
 p{
   margin:5px;
@@ -154,7 +147,6 @@ p{
   width:100%;
   margin:10px 0;
   justify-content: space-between;
-  margin:10px 0;
   border-bottom:2px solid rgb(211, 211, 211);
 
 }
@@ -176,20 +168,13 @@ font-size:1.2em;
  display: flex;
  align-items:center;
  justify-content:flex-start;
-<<<<<<< HEAD
  /* margin:0 -60px; */
-=======
-
->>>>>>> 986a488c7b4d31f04e2b43d48e8914775c58e5f8
 }
 .rating > img{
   width: 20px;
   height:20px;
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> 986a488c7b4d31f04e2b43d48e8914775c58e5f8
 .brand-cat{
   display:flex;
   padding:1%;
