@@ -1,10 +1,20 @@
 <template>
 
    <div class="main">
-       <h1>my products</h1>
-       <label for="ipt">
-            <input type="text" name="text" id="ipt" v-model="search" placeholder="Search for producs">
-       </label>
+       <header>
+           <h1>H</h1> <p>My producs</p>
+       </header>
+       <div class="search">
+            <label for="ipt">
+                <input type="text" name="text" id="ipt" v-model="search" placeholder="Search for producs">
+            </label>
+            <label for="select">
+                <select name="sect" v-model="categories" >
+                    <option value="" disabled>Filter by category</option>
+                    <option :value="filter" v-for="filter in Search" :key='filter'>{{filter}}</option>
+                </select>
+            </label>
+       </div>
        <div class="error" v-if="errored">
             <h3>OOPPSS!! an Error Occured</h3>
        </div>
@@ -15,23 +25,26 @@
                     <div class="div"></div>
                 </div>
             </div>
-            <div class="prod" v-else v-for="product in productsSearch" :key="product.id">
-           <div class="img">
-               <img :src="product.thumbnail" :alt="product.title">
-           </div>
-           <h2>{{product.title}}</h2>
-           <div class="txt">
-               <p><b>Product:</b> {{product.brand}}</p>
-               <p><b>Category:</b> {{product.category}}</p>
-               <p><b>Discount Percentage:</b> {{product.discountPercentage}}</p>
-               <p><b>Rating:</b> {{product.rating}}</p>
-               <p><b>Price:</b> {{product.price}}</p>
-           </div>
-           <div class="des">
-               <p>{{product.description}}</p>
-           </div>
-       </div>
+            <div v-else class="prod" v-for="product in productsSearch" :key="product.id">
+                <div class="img">
+                <router-link :to="{ name: 'ApiDetails', params: { id: product.id } }">
+                        <img :src="product.thumbnail" :alt="product.title">
+                </router-link>
+                </div>
+                <h2>{{product.title}}</h2>
+                <div class="txt">
+                    <p><b>Product:</b> {{product.brand}}</p>
+                    <p><b>Category:</b> {{product.category}}</p>
+                    <p><b>Discount Percentage:</b> {{product.discountPercentage}}</p>
+                    <p><b>Rating:</b> {{product.rating}}</p>
+                    <p><b>Price:</b> {{product.price}}</p>
+                </div>
+                <div class="des">
+                    <p>{{product.description}}</p>
+                </div>
+            </div>
         </section>
+            <router-view></router-view>
    </div>
 </template>
 
@@ -42,7 +55,8 @@ export default {
     data() {
         return{
             search:'',
-            products: [],
+            categories:'',
+            products:[],
             loading: true,
             errored: false
         }
@@ -50,9 +64,9 @@ export default {
   
     mounted() {
         this.axios.get('https://dummyjson.com/products')
-        .then(prod => {
-            console.log(prod)
-            this.products = prod.data.products
+        .then(response => {
+            console.log(response.data, 'This is the data')
+            this.products = response.data.products
             })
         .catch(err => {
             console.log(err)
@@ -64,7 +78,13 @@ export default {
         
         productsSearch() {
             let prod = [...this.products]
-            return prod = prod.filter(srch => srch.title.toLowerCase().includes(this.search.toLowerCase()))
+            return prod = prod.filter(srch => srch.category.includes(this.categories) && srch.title.toLowerCase().includes(this.search.toLowerCase()))
+        },
+        Search(){
+             let prod = [...this.products]
+            let filterSearch = [...new Set(prod.map(data => data.category))]
+            console.log(filterSearch);
+            return filterSearch
         }
     }
 }
@@ -77,34 +97,73 @@ export default {
         box-sizing: border-box;
         font-size: 18px;
     }
-
+    p{
+        line-height: 35px;
+    }
     .main{
         position: relative;
-        /* grid-template-columns: 1fr; */
         width: 100%;
+        margin: 0;
     }
-    .main label{
+  
+    header{
+        position: fixed;
+        background: #fff;
+        box-shadow: 0 3px 5px rgba(0, 0, 0, .2);
         width: 100%;
-        padding: 0 10px;
-        margin: 1.5rem 0;
-        display: block;
-
+        left: 0;
+        top: 0;
+        height: 3rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 10000;
+        padding: 2rem 0.5rem;
+    }
+      header h1{
+        text-align: left;
+        font-size: 1.5em;
+        text-transform: uppercase;
+        margin: 0;
+        padding: 0;
     }
     .error h3, .load p{
         text-align: center;
         font-size: 2em;
+    }
+    .search{
+        width: 100%;
+        position: relative;
+        display: flex;
+        /* flex-basis: end; */
+        align-items: left;
+        margin: 4.5em 0 2em;
+       flex-direction: column;
+        padding: 0 1.5rem;
+    }
+    label:nth-child(1){
+        margin-bottom: 10px;
     }
     label input{
         width: 100%;
         outline: none;
         padding: 12px;
         font-size: 18px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        box-shadow: 3px 3px 23px rgba(0, 0, 0, .2);
     }
-    .main h1{
-        text-align: center;
-        font-size: 3em;
-        text-transform: uppercase;
-        margin-bottom: 1rem;
+    label:nth-child(2) select{
+        outline: none;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+         box-shadow: 3px 3px 23px rgba(0, 0, 0, .2);
+    }
+    label select option{
+        padding: 10px;
+        line-height: 40px;
     }
     section{
         display: grid;
@@ -120,12 +179,14 @@ export default {
         padding: 0;
         background: #f5f5f5;
         max-width: 450px;
-        box-shadow: 3px 3px 15px rgba(0, 0, 0, .2);
+        box-shadow: 3px 3px 25px rgba(0, 0, 0, .4);
         border-radius: 10px;
         overflow: hidden;
     }
     .prod h2{
         text-align: center;
+        margin: 10px 0;
+        font-size: 28px;
     }
     .prod .img{
         position: relative;
@@ -206,11 +267,19 @@ export default {
     @media screen and (min-width: 768px) {
         section{
             grid-template-columns: repeat(2, 1fr );
-            column-gap: 1.5rem;
+            gap: 2rem;
+            padding: 0 1.5rem;
         }
-        label input{
-            width: 50%;
+        label:nth-child(1){
+            margin-bottom: initial;
+            width: 500px;
         }
+        .search{
+            flex-direction: row;
+            justify-content: space-between;
+            align-items: center;
+        }
+       
     }
     @media screen and (min-width: 1000px) {
         section{

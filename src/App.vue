@@ -1,13 +1,13 @@
 <template>
-    <Api />
+
+        <router-view></router-view>
 </template>
 
 <script>
-import Api from './components/Api.vue'
+
 export default {
   name: 'App',
   components: {
-    Api,
   }
 }
 </script>
@@ -18,5 +18,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   margin: 0;
+  padding: 0;
+
 }
+
 </style>
